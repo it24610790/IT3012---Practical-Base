@@ -39,6 +39,18 @@ class VisualGridHuntGame:
         self.steps = 0
         self.collision = False
 
+        #generate toxic traps
+        self.toxic_traps = set()
+        num_traps = 3
+        while len(self.toxic_traps) < num_traps:
+            tx = random.randint(0, self.width - 1)
+            ty = random.randint(0, self.height - 1)
+            trap_pos = (tx, ty)
+            if (trap_pos != (0, 0) and 
+                trap_pos not in self.walls and 
+                trap_pos not in self.food_positions):
+                self.toxic_traps.add(trap_pos)
+
     def get_percept(self) -> dict:
         return {
             'agent_pos': list(self.agent_pos),
