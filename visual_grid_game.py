@@ -59,7 +59,7 @@ class VisualGridHuntGame:
             'hit_wall': tuple(self.agent_pos) in self.walls,
             'collision': self.collision,
             'score': self.score,
-            'remaining_food': len(self.food_positions)
+            'remaining_food': len(self.food_positions),
             'in_toxic_trap': tuple(self.agent_pos) in self.toxic_traps,
         }
 
