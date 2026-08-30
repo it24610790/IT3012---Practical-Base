@@ -52,13 +52,11 @@ class VisualGridHuntGame:
                 self.toxic_traps.add(trap_pos)
 
     def get_percept(self) -> dict:
-        # Default orientation (facing direction) if not already set
+        # Facing direction calculation (if exists)
         if not hasattr(self, 'agent_dir'):
             self.agent_dir = 'Up'
 
         x, y = self.agent_pos
-
-        # Calculate position ahead based on current facing direction
         dx, dy = 0, 0
         if self.agent_dir == 'Up':
             dy = 1
@@ -70,20 +68,19 @@ class VisualGridHuntGame:
             dx = 1
 
         ahead_pos = (x + dx, y + dy)
-
-        # Check if there is a wall ahead (boundary or actual wall obstacle)
         wall_ahead = (
             ahead_pos in self.walls or
             ahead_pos[0] < 0 or ahead_pos[0] >= self.width or
             ahead_pos[1] < 0 or ahead_pos[1] >= self.height
         )
 
-        # Check if food is present at current position
-        food_here = tuple(self.agent_pos) in self.food_positions
-
         return {
+            'agent_pos': tuple(self.agent_pos),
             'wall_ahead': wall_ahead,
-            'food_here': food_here
+            'food_here': tuple(self.agent_pos) in self.food_positions,
+            'grid_size': (self.width, self.height),
+            'walls': list(self.walls),
+            'all_food': list(self.food_positions)
         }
 
     def execute_action(self, action: str):
